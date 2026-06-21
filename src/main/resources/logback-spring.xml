@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- ========================================================= -->
+    <!--  GLOBAL PROPERTIES                                        -->
+    <!-- ========================================================= -->
+
+    <!-- App name (used in logs) -->
+    <property name="APP_NAME" value="ai-expense-tracker"/>
+
+    <!-- Log directory -->
+    <property name="LOG_DIR" value="logs"/>
+
+    <!-- Log pattern -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | %X{traceId} | %logger{36} | %msg%n"/>
+
+    <!-- ========================================================= -->
+    <!--  CONSOLE APPENDER (DEV)                                   -->
+    <!-- ========================================================= -->
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================================================= -->
+    <!--  FILE APPENDER (PROD)                                     -->
+    <!-- ========================================================= -->
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_DIR}/${APP_NAME}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Keep logs for 30 days -->
+            <maxHistory>30</maxHistory>
+
+            <!-- Total size cap -->
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- ========================================================= -->
+    <!--  LOG LEVELS                                               -->
+    <!-- ========================================================= -->
+
+    <!-- Reduce noisy logs -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="WARN"/>
+
+    <!-- Application logs -->
+    <logger name="com.aiexpensetracker" level="DEBUG"/>
+
+    <!-- ========================================================= -->
+    <!--  DEV PROFILE                                              -->
+    <!-- ========================================================= -->
+
+    <springProfile name="dev">
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+    </springProfile>
+
+    <!-- ========================================================= -->
+    <!--  PROD PROFILE                                             -->
+    <!-- ========================================================= -->
+
+    <springProfile name="prod">
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+
+    </springProfile>
+
+</configuration>
