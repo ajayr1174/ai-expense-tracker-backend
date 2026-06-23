@@ -19,7 +19,7 @@ spring doc:
     path: /swagger-ui.html
     operations-sorter: method
   api-docs:
-    path: /v1/api-docs
+    path: /v3/api-docs
 
 server:
   port: 8080

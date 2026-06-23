@@ -1,6 +1,13 @@
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/AiExpenseTrackerApplication.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/controller/AuthController.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/dto/AuthResponse.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/dto/LoginRequest.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/dto/SignupRequest.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/repository/AuthRepository.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/auth/service/AuthService.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/ApiErrorResponse.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/BadRequestException.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/DuplicateResourceException.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/GlobalExceptionHandler.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/ResourceNotFoundException.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/exception/UnauthorizedException.java
@@ -10,4 +17,7 @@
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/security/handler/JwtAuthenticationEntryPoint.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/security/jwt/JwtProperties.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/security/jwt/JwtService.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/security/model/CustomUserPrincipal.java
 /Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/security/service/CustomUserDetailsService.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/user/entity/Users.java
+/Users/ajaysingh/Developer/ai-expense-tracker/src/main/java/com/aiexpensetracker/user/repository/UsersRepository.java
