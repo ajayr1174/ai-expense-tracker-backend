@@ -27,8 +27,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
 
-        return request.getServletPath()
-                .startsWith("/api/auth");
+        String path = request.getServletPath();
+
+        return path.startsWith("/api/auth")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-resources")
+                || path.startsWith("/webjars");
     }
 
     @Override
@@ -39,10 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwtToken = authHeader.split(" ")[1];
+        String jwtToken = authHeader.substring(7);
         String userName = jwtService.extractUserName(jwtToken);
 
-        if(userName != null || SecurityContextHolder.getContext().getAuthentication() == null){
+        if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 //            validating the token here
             if(jwtService.isValidToken(jwtToken, userDetails)){
@@ -52,5 +57,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
+        filterChain.doFilter(request, response);
     }
 }

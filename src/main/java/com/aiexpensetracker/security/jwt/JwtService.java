@@ -1,5 +1,6 @@
 package com.aiexpensetracker.security.jwt;
 
+import com.aiexpensetracker.user.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,16 @@ public class JwtService {
         return Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateJwtToken(String email){
-        Map<String, Object> claims =  new HashMap<>();
+    public String generateJwtToken(User user){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId().toString());
+        claims.put("role", user.getRole().name());
+
         return Jwts.builder()
-                .claims()
-                .add(claims)
-                .subject(email)
+                .claims(claims)
+                .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtProperties.getAccessTokenExpiration()))
-                .and()
                 .signWith(getKey())
                 .compact();
     }

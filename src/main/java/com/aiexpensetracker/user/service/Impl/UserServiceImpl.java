@@ -1,14 +1,16 @@
-package com.aiexpensetracker.user.service;
+package com.aiexpensetracker.user.service.Impl;
 
 import com.aiexpensetracker.exception.BusinessException;
 import com.aiexpensetracker.exception.InvalidCredentialsException;
 import com.aiexpensetracker.exception.ResourceNotFoundException;
+import com.aiexpensetracker.security.service.CurrentUserService;
 import com.aiexpensetracker.user.dto.request.ChangePasswordRequest;
 import com.aiexpensetracker.user.dto.request.UpdateProfileRequest;
 import com.aiexpensetracker.user.dto.response.UserProfileResponse;
 import com.aiexpensetracker.user.entity.User;
 import com.aiexpensetracker.user.mapper.UserMapper;
 import com.aiexpensetracker.user.repository.UserRepository;
+import com.aiexpensetracker.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -30,20 +32,7 @@ class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private User getCurrentUser() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        String email = authentication.getName();
-
-        return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "User",
-                                "email",
-                                email));
-    }
+    private final CurrentUserService currentUserService;
 
     @Override
     public UserProfileResponse getCurrentUserProfile() {
@@ -77,7 +66,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileResponse updateProfile(UpdateProfileRequest request) {
-        User user = getCurrentUser();
+        User user = currentUserService.getCurrentUser();
 
         userMapper.partialUpdate(request, user);
 
@@ -88,7 +77,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     public void changePassword(ChangePasswordRequest request) {
-        User user = getCurrentUser();
+        User user = currentUserService.getCurrentUser();
 
         if (!passwordEncoder.matches(
                 request.getCurrentPassword(),
@@ -114,7 +103,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     public void deleteAccount() {
-        User user = getCurrentUser();
+        User user = currentUserService.getCurrentUser();
 
         user.setEnabled(false);
 

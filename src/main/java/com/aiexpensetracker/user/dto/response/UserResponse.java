@@ -1,20 +1,28 @@
-package com.aiexpensetracker.user.dto;
+package com.aiexpensetracker.user.dto.response;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import lombok.Value;
+import com.aiexpensetracker.user.entity.User;
+import com.aiexpensetracker.user.enums.Role;
+import lombok.Builder;
+import lombok.Data;
 
-import java.io.Serializable;
+import java.util.UUID;
 
 /**
- * DTO for {@link com.aiexpensetracker.user.entity.Users}
+ * DTO for {@link User}
  */
-@Value
-public class UsersDto implements Serializable {
-    @Email(message = "Invalid email")
-    String email;
-    @Size(message = "Name must be minimum 3 characters long")
-    String name;
-    @Size(min = 8, message = "Password must be minimum 8 characters long")
-    String password;
+@Data
+@Builder
+public class UserResponse {
+
+    private UUID id;
+
+    private String email;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String profilePicture;
+
+    private Role role;
 }

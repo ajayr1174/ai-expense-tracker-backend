@@ -1,8 +1,8 @@
 package com.aiexpensetracker.security.service;
 
 import com.aiexpensetracker.security.model.CustomUserPrincipal;
-import com.aiexpensetracker.user.entity.Users;
-import com.aiexpensetracker.user.repository.UsersRepository;
+import com.aiexpensetracker.user.entity.User;
+import com.aiexpensetracker.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Users users =  usersRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Wrong email or password."));
-        return new CustomUserPrincipal(users);
+        User user =  userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Wrong email or password."));
+        return new CustomUserPrincipal(user);
     }
 }

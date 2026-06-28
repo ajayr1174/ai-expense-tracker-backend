@@ -1,44 +1,74 @@
 package com.aiexpensetracker.user.entity;
 
 import com.aiexpensetracker.common.entity.BaseEntity;
+import com.aiexpensetracker.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
-public class Users extends BaseEntity {
+public class User extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(unique = true)
+
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
-    private String name;
+
+    @Column(nullable = false, length = 50)
+    private String firstName;
+
+    @Column(nullable = false, length = 50)
+    private String lastName;
+
+    @Column(nullable = false)
     private String password;
-    String profilePicture;
 
-    Boolean emailVerified;
+    @Column(length = 500)
+    private String profilePicture;
 
-    Boolean enabled;
-    Boolean accountNonLocked;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean enabled = true;
 
-    Boolean credentialsNonExpired;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean emailVerified = false;
 
-    Boolean accountNonExpired;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean accountNonExpired = true;
 
-    LocalDateTime lastLoginAt;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean accountNonLocked = true;
 
-    LocalDateTime passwordChangedAt;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean credentialsNonExpired = true;
 
-    Role role;
+    private LocalDateTime lastLoginAt;
 
-    Audit Fields;
+    private LocalDateTime passwordChangedAt;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.ROLE_USER;
+    
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private UserPreference preference;
 }

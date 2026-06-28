@@ -1,7 +1,6 @@
 package com.aiexpensetracker.security.model;
 
-import com.aiexpensetracker.user.entity.Users;
-import lombok.AllArgsConstructor;
+import com.aiexpensetracker.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomUserPrincipal implements UserDetails {
 
-    private final Users users;
+    private final User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -20,12 +19,12 @@ public class CustomUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return users.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return users.getEmail();
+        return user.getEmail();
     }
 
     @Override
