@@ -3,5 +3,7 @@
   <component name="DiffGenerationConfig">
     <option name="snapshotDb" value="false" />
     <option name="snapshotModelValue" value="ai-expense-tracker:ai-expense-tracker" />
+    <option name="sourceModelValue" value="ai-expense-tracker:ai-expense-tracker" />
+    <option name="targetDbValue" value="68530ecc-3b87-44d9-88bd-18539b71ad42" />
   </component>
 </project>
