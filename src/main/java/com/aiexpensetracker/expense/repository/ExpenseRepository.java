@@ -52,4 +52,29 @@ public interface ExpenseRepository
             LocalDate endDate
     );
 
+
+    @Query("""
+    SELECT COALESCE(SUM(e.amount), 0)
+    FROM Expense e
+    WHERE e.user.id = :userId
+    """)
+    BigDecimal sumTotalAmountByUserId(UUID userId);
+
+    @Query("""
+    SELECT COALESCE(SUM(e.amount), 0)
+    FROM Expense e
+    WHERE e.user.id = :userId
+      AND e.expenseDate = :date
+    """)
+    BigDecimal sumAmountByUserAndDate(
+            UUID userId,
+            LocalDate date
+    );
+
+    long countByUserIdAndExpenseDateBetween(
+            UUID userId,
+            LocalDate startDate,
+            LocalDate endDate
+    );
+
 }
