@@ -10,14 +10,19 @@ public record RecentTransactionResponse(
 
         UUID expenseId,
 
-        String category,
+        UUID categoryId,
 
-        String description,
+        String categoryName,
+
+        String color,
 
         BigDecimal amount,
+
+        String description,
 
         LocalDate expenseDate,
 
         PaymentMethod paymentMethod
 
-) {}
+) {
+}

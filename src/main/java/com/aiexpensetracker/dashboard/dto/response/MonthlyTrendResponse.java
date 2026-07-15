@@ -10,4 +10,5 @@ public record MonthlyTrendResponse(
 
         BigDecimal amount
 
-) {}
+) {
+}

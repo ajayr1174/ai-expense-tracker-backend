@@ -36,4 +36,17 @@ public interface BudgetRepository extends JpaRepository<Budget, UUID>, JpaSpecif
             LocalDate startDate,
             LocalDate endDate
     );
+
+    @Query("""
+    SELECT b
+    FROM Budget b
+    WHERE b.user.id = :userId
+      AND b.category IS NULL
+      AND b.startDate <= :date
+      AND b.endDate >= :date
+    """)
+    Optional<Budget> findActiveOverallBudget(
+            UUID userId,
+            LocalDate date
+    );
 }

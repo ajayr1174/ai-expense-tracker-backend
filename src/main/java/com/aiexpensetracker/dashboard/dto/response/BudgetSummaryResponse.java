@@ -12,4 +12,5 @@ public record BudgetSummaryResponse(
 
         BigDecimal usagePercentage
 
-) {}
+) {
+}

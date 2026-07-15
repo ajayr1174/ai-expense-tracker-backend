@@ -16,4 +16,5 @@ public record DashboardResponse(
 
         List<RecentTransactionResponse> recentTransactions
 
-) {}
+) {
+}

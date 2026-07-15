@@ -6,4 +6,4 @@ public record DashboardPeriodResponse(
 
         Integer year
 
-) {}
+) { }

@@ -13,6 +13,6 @@ public record CategorySpendingResponse(
 
         BigDecimal amount,
 
-        Double percentage
+        BigDecimal percentage
 
 ) {}
