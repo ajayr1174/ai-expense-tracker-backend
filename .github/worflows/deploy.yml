@@ -1,0 +1,69 @@
+name: Deploy to ECR and ECS
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: ai-expense-tracker-backend
+  ECS_CLUSTER: ai-expense-tracker-cluster
+  ECS_SERVICE: ai-expense-tracker-service
+  ECS_TASK_DEFINITION: .aws/task-definition.json
+  CONTAINER_NAME: ai-expense-tracker-backend
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image tag
+        id: image
+        run: echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker build -t $ECR_REPOSITORY:${{ steps.image.outputs.IMAGE_TAG }} .
+
+      - name: Tag image for ECR
+        run: |
+          docker tag $ECR_REPOSITORY:${{ steps.image.outputs.IMAGE_TAG }} \
+          ${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${{ steps.image.outputs.IMAGE_TAG }}
+
+      - name: Push image to ECR
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${{ steps.image.outputs.IMAGE_TAG }}
+
+      - name: Render ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${{ steps.image.outputs.IMAGE_TAG }}
+
+      - name: Deploy to ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

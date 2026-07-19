@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: dev
   application:
     name: ai-expense-tracker
 
@@ -13,12 +11,7 @@ spring:
     validate-on-migrate: true
     baseline-on-migrate: true
 
-spring doc:
-  swagger-ui:
-    path: /swagger-ui.html
-    operations-sorter: method
-  api-docs:
-    path: /v3/api-docs
+
 
 server:
   port: 8080
